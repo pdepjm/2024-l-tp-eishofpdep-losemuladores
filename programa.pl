@@ -9,18 +9,19 @@ jugadores(carola, romanos, herreria).
 jugadores(dimitri, romanos, herreria).
 jugadores(dimitri, romanos, fundicion).
 
+%dividir en dos predicados
+
 %punto 2
 
 esExperto(Jugador):-
-    jugadores(Jugador, Civilizacion, Tecnologia),
-    Tecnologia = forja,
-    Tecnologia = herreria,
-    Tecnologia = fundicion.
+    jugadores(Jugador, _, forja),
+    jugadores(Jugador, _, herreria).
+    %falta agregar
+
 
 esExperto(Jugador):-
     jugadores(Jugador, Civilizacion, Tecnologia),
-    Tecnologia = forja,
-    Tecnologia = herreria,
+    minimoMateriales(Jugador)
     Civilizacion = romanos.
 
 %punto 3
@@ -41,3 +42,14 @@ alcanceGlobal(Tecnologia):-
 esLider(Civilizacion):-
     jugadores(_, Civilizacion, _),
     forall(jugadores(_, _, Tecnologia), jugadores(_, Civilizacion, Tecnologia)).
+
+%desarrollar predicado consecuente para relacionar para todas las civilizaciones que hayan desarrollado una tecnologia, que la civilizacion que evalue, las tenga
+
+%ENTREGA 2
+%punto 6
+
+soldado(campeon, caracteristicas(Vida)).
+soldado(jinete, caracteristicas(Vida, Animal)).
+soldado(piquero, caracteristicas(Vida, Nivel, Escudo)).
+
+

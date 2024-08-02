@@ -1,55 +1,51 @@
-jugadores(ana, romanos, herreria).
-jugadores(ana, romanos, forja).
-jugadores(ana, romanos, emplumado).
-jugadores(ana, romanos, laminados).
-jugadores(beto, incas, herreria).
-jugadores(beto, incas, forja).
-jugadores(beto, incas, fundicion).
-jugadores(carola, romanos, herreria).
-jugadores(dimitri, romanos, herreria).
-jugadores(dimitri, romanos, fundicion).
+jugador(ana).
+jugador(beto).
+jugador(carola).
+jugador(dimitri).
 
-%dividir en dos predicados
+civilizacion(ana, romanos).
+civilizacion(beto, incas).
+civilizacion(carola, romanos).
+civilizacion(dimitri, romanos).
+
+tecnologia(ana, herreria).
+tecnologia(ana, forja).
+tecnologia(ana, emplumado).
+tecnologia(ana, laminados).
+tecnologia(beto, herreria).
+tecnologia(beto, forja).
+tecnologia(beto, fundicion).
+tecnologia(carola, herreria).
+tecnologia(dimitri, herreria).
+tecnologia(dimitri, fundicion).
 
 %punto 2
+expertoEnMetales(Jugador):-
+    tecnologia(Jugador, herreria),
+    tecnologia(Jugador, forja),
+    condicionExperto(Jugador).
 
-esExperto(Jugador):-
-    jugadores(Jugador, _, forja),
-    jugadores(Jugador, _, herreria).
-    %falta agregar
+condicionExperto(Jugador):-
+    tecnologia(Jugador, fundicion).
 
-
-esExperto(Jugador):-
-    jugadores(Jugador, Civilizacion, Tecnologia),
-    minimoMateriales(Jugador)
-    Civilizacion = romanos.
+condicionExperto(Jugador):-
+    civilizacion(Jugador, romanos).
 
 %punto 3
-
 esPopular(Civilizacion):-
-    jugadores(Jugador1, Civilizacion, _),
-    jugadores(Jugador2, Civilizacion, _),
+    civilizacion(Jugador1, Civilizacion),
+    civilizacion(Jugador2, Civilizacion),
     Jugador1 \= Jugador2.
 
-%punto 4    
-
+%punto 4
 alcanceGlobal(Tecnologia):-
-    jugadores(_, _, Tecnologia),
-    forall(jugadores(Jugador, _, _), jugadores(Jugador, _, Tecnologia)).
+    forall(jugador(Jugador), tecnologia(Jugador, Tecnologia)).
 
 %punto 5
+tecnologiaAlcanzada(Civilizacion, Tecnologia):-
+    jugador(Jugador),
+    civilizacion(Jugador, Civilizacion),
+    tecnologia(Jugador, Tecnologia).
 
 esLider(Civilizacion):-
-    jugadores(_, Civilizacion, _),
-    forall(jugadores(_, _, Tecnologia), jugadores(_, Civilizacion, Tecnologia)).
-
-%desarrollar predicado consecuente para relacionar para todas las civilizaciones que hayan desarrollado una tecnologia, que la civilizacion que evalue, las tenga
-
-%ENTREGA 2
-%punto 6
-
-soldado(campeon, caracteristicas(Vida)).
-soldado(jinete, caracteristicas(Vida, Animal)).
-soldado(piquero, caracteristicas(Vida, Nivel, Escudo)).
-
-
+    forall(tecnologia(_, Tecnologia), tecnologiaAlcanzada(Civilizacion, Tecnologia)).

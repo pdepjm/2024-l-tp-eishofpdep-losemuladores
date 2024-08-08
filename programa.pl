@@ -54,7 +54,7 @@ esLider(Civilizacion):-
     forall(tecnologia(_, Tecnologia), tecnologiaAlcanzada(Civilizacion, Tecnologia)).
 
 %punto 6
-
+/*
 campeon(Vida):-
     between(1, 100, Vida).
     
@@ -69,10 +69,13 @@ piquero(sinEscudo, 3).
 jinete(caballo).
 jinete(camello).
 
-soldados(ana, [jinete(caballo),piquero(conEscudo,1),piquero(sinEscudo,2)]).
-soldados(beto, [campeon(100),campeon(80),jinete(camello),piquero(conEscudo,1)]).
-soldados(carola, [piquero(sinEscudo,3),piquero(conEscudo,3)]).
-soldados(dimitri, []).
+soldados(ana,unidad ([jinete(caballo),piquero(conEscudo,1),piquero(sinEscudo,2)])).
+*/
+soldados(beto,campeon(100)).
+soldados(beto,campeon(80)).
+soldados(beto,jinete(camello)).
+soldados(beto,piquero(conEscudo,1)).
+%soldados(carola,[piquero(sinEscudo,3),piquero(conEscudo,3)]).
 
 %punto 7 
 
@@ -85,13 +88,33 @@ vida(piquero(sinEscudo, 3), 70).
 vida(piquero(conEscudo, Nivel), Vida):-
     vida(piquero(sinEscudo, Nivel), VidaSinEscudo),
     Vida is VidaSinEscudo * (1.1).
+/*unidadConMasVida2(Jugador,UnidadMasVida):-
+    soldados(Jugador,Unidad),
 
-unidadConMasVida(Jugador, UnidadMasVida) :-
+    findall(Unidad,soldados(Jugador,Unidad),TodasLasUnidades),
+    elMasAlto(TodasLasUnidades,UnidadMasVida).
+
+elMasAlto(TodasLasUni,UnidadMasALta):-
+
+    max_member(TodasLasUni,UnidadConVidaMasAlta).
+*/
+
+unidadConMasVida3(Jugador,UnidadMasVida):-
+    soldados(Jugador,_),
+    forall(soldados(Jugador,Unidad),laQueTieneMasVida(Unidad,UnidadMasVida)).
+
+laQueTieneMasVida(Unidad,UnidadMasVida):-
+    vida(Unidad, VidaUnidad),
+    vida(UnidadMasVida, VidaUnidad2),
+    VidaUnidad < VidaUnidad2.
+
+
+/*unidadConMasVida(Jugador, UnidadMasVida) :-
         soldados(Jugador, Unidades),
         findall(Vida,(member(UnidadActual,Unidades),vida(UnidadActual,Vida)),VidaUnidades),
         max_member(UnidadConVidaMasAlta, VidaUnidades),
         vida(UnidadMasVida,UnidadConVidaMasAlta).
-
+*/
 %punto 8
 leGana(jinete(_),campeon(_)).
 leGana(campeon(_),piquero(_,_)_).
@@ -111,6 +134,9 @@ sobreviveUnAsedio(Jugador):-
     length(PiquerosConEscudos,LargoConEscudo),
     length(PiquerosSinEscudos,LargoSinEscudo),
     LargoConEscudo > LargoSinEscudo.
+encontrarU
+%cambiar el member y armar las listas con findall segun jugador y %unidades
+%Hacer funcion generica de encontrar unidades y tambein contar adentro con findall y length asi no se repite logica en predicado principal
 
 %punto 10
 
@@ -143,14 +169,21 @@ unaTecnologia(arado).
 
 puedeDesarrollar(Jugador, Tecnologia):-
     unaTecnologia(Tecnologia),
-    \+ tecnologia(Jugador, Tecnologia),
+    not(tecnologia(Jugador, Tecnologia)),
     puedeDesarrollarDependencias(Jugador, Tecnologia).
 
 puedeDesarrollarDependencias(_, Tecnologia):-
     unaTecnologia(Tecnologia),
-    \+ (necesita(Tecnologia, _)).
+    not((necesita(Tecnologia, _))).
+
 
 puedeDesarrollarDependencias(Jugador, Tecnologia):-
     necesita(Tecnologia, Requerida),
     tecnologia(Jugador, Requerida),
     puedeDesarrollarDependencias(Jugador, Requerida).
+
+
+/*ordenValido(Jugador,TecnologiasLista):-
+    tecnologia(Jugador, Tecnologia),
+    ordenValido(Jugador, Tecnologia, TecnologiasLista)
+*/

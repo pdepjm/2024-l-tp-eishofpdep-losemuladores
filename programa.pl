@@ -77,6 +77,8 @@ soldados(beto,jinete(camello)).
 soldados(beto,piquero(conEscudo,1)).
 %soldados(carola,[piquero(sinEscudo,3),piquero(conEscudo,3)]).
 
+%realizar hechos ej: soldados(ana,jinete(caballo)). la parte de jinete(caballo funciona como functor, sacar todos los predicados de las unidades por individual
+
 %punto 7 
 
 vida(jinete(caballo), 90).
@@ -137,6 +139,10 @@ sobreviveUnAsedio(Jugador):-
 encontrarU
 %cambiar el member y armar las listas con findall segun jugador y %unidades
 %Hacer funcion generica de encontrar unidades y tambein contar adentro con findall y length asi no se repite logica en predicado principal
+
+%cambiar el member por soldados(jugador,piquero)
+ %abstraer y hacer una funcion que se llame cuantas unidades tiene en vez de repetir logica y usar dos findall y dos length
+ %cuantasUnidades(piquero(conEscudo,_),cantidadPiqueros)
 
 %punto 10
 
